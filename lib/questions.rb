@@ -185,31 +185,37 @@ end
 # 'the lion the witch and the wardrobe' becomes
 # 'The Lion the Witch and the Wardrobe'
 def titleize_a_string(string)
-  string.split.map(&:capitalize).join(" ")
+  stop_words = %w{a and the}
+  string.split.each_with_index.map{|word, index| stop_words.include?(word) && index > 0 ? word : word.capitalize }.join(" ")
 end
 
 # return true if a string contains any special characters
 # where 'special character' means anything apart from the letters
 # a-z (uppercase and lower) or numbers
 def check_a_string_for_special_characters(string)
+  /[^A-Za-z0-9]/ === string
 end
 
 # get the upper limit of a range. e.g. for the range 1..20, you
 # should return 20
 def get_upper_limit_of(range)
+  range.last
 end
 
 # should return true for a 3 dot range like 1...20, false for a
 # normal 2 dot range
 def is_a_3_dot_range?(range)
+  range.exclude_end?
 end
 
 # get the square root of a number
 def square_root_of(number)
+  Math.sqrt(number)
 end
 
 # count the number of words in a file
 def word_count_a_file(file_path)
+  file = File.read(file_path).split.size
 end
 
 # --- tougher ones ---
@@ -218,12 +224,14 @@ end
 # called call_method_from_string('foobar')
 # the method foobar should be invoked
 def call_method_from_string(str_method)
+  send(str_method)
 end
 
 # return true if the date is a uk bank holiday for 2014
 # the list of bank holidays is here:
 # https://www.gov.uk/bank-holidays
 def is_a_2014_bank_holiday?(date)
+  [Time.new(2014,12,26), Time.new(2014,12,25), Time.new(2014,8,25), Time.new(2014,5,26), Time.new(2014,5,5), Time.new(2014,4,21), Time.new(2014,4,18), Time.new(2014,1,1,)].include?(date)
 end
 
 # given your birthday this year, this method tells you
@@ -231,6 +239,11 @@ end
 # e.g. january 1st, will next be a friday in 2016
 # return the day as a capitalized string like 'Friday'
 def your_birthday_is_on_a_friday_in_the_year(birthday)
+  date = birthday
+  while !date.friday?
+    date = Time.new(date.year+1,date.month,date.day)
+  end
+  date.year
 end
 
 # in a file, total the number of times words of different lengths
@@ -239,6 +252,12 @@ end
 # and 1 that is 4 letters long. Return it as a hash in the format
 # word_length => count, e.g. {2 => 1, 3 => 5, 4 => 1}
 def count_words_of_each_length_in_a_file(file_path)
+  file = File.read(file_path).gsub!(/[^0-9A-Za-z\s]/, '')
+  h = Hash.new(0)
+  file.split.each do |word|
+    h[word.length] += 1
+  end
+  h
 end
 
 # implement fizzbuzz without modulo, i.e. the % method

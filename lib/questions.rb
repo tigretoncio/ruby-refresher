@@ -264,6 +264,20 @@ end
 # go from 1 to 100
 # (there's no RSpec test for this one)
 def fizzbuzz_without_modulo
+  fizz = [3,6,9,12,18,21,24,27,33,36,39,42,48,51,54,57,63,66,69,72,78,81,84,87,93,96,99]
+  buzz = [5,10,20,25,35,40,50,55,65,70,80,85,95,100]
+  fizzbuzz = [15,30,45,60,75,90]
+  100.times do |number|
+    if fizz.include?(number)
+      print "fizz"
+    elsif buzz.include?(number)
+      print "buzz"
+    elsif fizzbuzz.include?(number)
+      print "fizzbuzz"
+    else
+      print number
+    end
+  end
 end
 
 # print the lyrics of the song 99 bottles of beer on the wall
@@ -273,4 +287,18 @@ end
 # at the end.
 # (there's no RSpec test for this one)
 def ninety_nine_bottles_of_beer
+  bottles = 99
+  s = bottles == 1 ? "" : "s"
+  one = "1 bottle of beer on the wall, 1 bottle of beer.
+  Take one down and pass it around, no more bottles of beer on the wall.\n"
+  zero = "\nNo more bottles of beer on the wall, no more bottles of beer.
+  Go to the store and buy some more, 99 bottles of beer on the wall."
+  while bottles > 1
+    puts "#{bottles} bottle#{s} of beer on the wall, #{bottles} bottle#{s} of beer.
+    Take one down and pass it around, #{bottles-1} bottle#{bottles-1 == 1 ? "": "s"} of beer on the wall."
+    puts
+    bottles -= 1
+  end
+  puts one
+  puts zero
 end
